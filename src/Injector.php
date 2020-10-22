@@ -118,9 +118,10 @@ class Injector implements InjectorInterface
     /**
      * Create the instance with auto wiring
      *
-     * @param string $name Class name or service alias
+     * @template T
+     * @param string|class-string<T> $name Class name or service alias
      * @param array  $parameters Constructor parameters, keyed by the parameter name.
-     * @return object|null
+     * @return T
      * @throws ClassNotFoundException
      * @throws RuntimeException
      */
@@ -150,9 +151,10 @@ class Injector implements InjectorInterface
      *
      * Any parameters provided will be used as constructor arguments only.
      *
-     * @param string $name The type name to instantiate.
+     * @template T
+     * @param string|class-string<T> $name The type name to instantiate.
      * @param array  $params Constructor arguments, keyed by the parameter name.
-     * @return object
+     * @return T
      * @throws InvalidCallbackException
      * @throws ClassNotFoundException
      */
@@ -169,7 +171,7 @@ class Injector implements InjectorInterface
             ));
         }
 
-        if (! class_exists($class) || interface_exists($class)) {
+        if (! class_exists($class)) {
             throw new ClassNotFoundException(sprintf(
                 'Class or interface by name %s does not exist',
                 $class

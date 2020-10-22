@@ -14,6 +14,13 @@
     </projectFiles>
 
     <issueHandlers>
+        <DeprecatedClass>
+            <errorLevel type="suppress">
+                <!-- LaminasTest\Di\Resolver\AbstractInjection is deprecated - psalm should not report its usage there -->
+                <referencedClass name="Laminas\Di\Resolver\AbstractInjection" />
+                <referencedClass name="LaminasTest\Di\Resolver\AbstractInjectionTest" />
+            </errorLevel>
+        </DeprecatedClass>
         <InternalMethod>
             <errorLevel type="suppress">
                 <referencedMethod name="PHPUnit\Framework\MockObject\Builder\InvocationMocker::method"/>
