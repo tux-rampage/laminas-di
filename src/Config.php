@@ -12,10 +12,12 @@ namespace Laminas\Di;
 
 use ArrayAccess;
 
+use function array_filter;
 use function array_keys;
 use function class_exists;
 use function interface_exists;
 use function is_array;
+use function is_string;
 
 /**
  * Provides a DI configuration from an array.
@@ -77,15 +79,21 @@ use function is_array;
  * For classes known from the definitions, a type preference might be the
  * better approach
  *
- * @see Laminas\Di\Resolver\ValueInjection A container to force injection of a value
- * @see Laminas\Di\Resolver\TypeInjection  A container to force looking up a specific type instance for injection
+ * @see \Laminas\Di\Resolver\ValueInjection A container to force injection of a value
+ * @see \Laminas\Di\Resolver\TypeInjection  A container to force looking up a specific type instance for injection
+ *
+ * @psalm-type TypeConfigArray = array{
+ *  typeOf?: class-string,
+ *  preferences?: array<array-key, string>,
+ *  parameters?: array<string, mixed>
+ * }
  */
 class Config implements ConfigInterface
 {
-    /** @var array */
+    /** @var array<array-key, string> */
     protected $preferences = [];
 
-    /** @var array */
+    /** @var array<array-key, TypeConfigArray> */
     protected $types = [];
 
     /**
@@ -93,30 +101,43 @@ class Config implements ConfigInterface
      *
      * Utilizes the given options array or traversable.
      *
-     * @param array|ArrayAccess $options The options array. Traversables will
-     *     be converted to an array internally.
+     * @param array|ArrayAccess $options
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($options = [])
     {
         $this->ensureArrayOrArrayAccess($options);
-        $this->preferences = $this->getDataFromArray($options, 'preferences') ?: [];
-        $this->types       = $this->getDataFromArray($options, 'types') ?: [];
+
+        $this->preferences = array_filter($this->dataFromArray($options, 'preferences'), 'is_string');
+        $this->types       = $this->dataFromArray($options, 'types') ?: [];
     }
 
     /**
      * @param array|ArrayAccess $data
      */
-    private function getDataFromArray($data, string $key): array
+    private static function dataFromArray($data, string $key): array
     {
+        /** @var mixed $result */
         $result = $data[$key] ?? [];
         return is_array($result) ? $result : [];
     }
 
     /**
+     * @param array|ArrayAccess $data
+     * @return array<array-key, string>
+     */
+    private function buildStringMapFromArray($data): array
+    {
+        return array_filter(
+            self::dataFromArray($data, 'types'),
+            'is_string'
+        );
+    }
+
+    /**
      * {@inheritDoc}
      *
-     * @see Laminas\Di\ConfigInterface::getClassForAlias()
+     * @see \Laminas\Di\ConfigInterface::getClassForAlias()
      */
     public function getClassForAlias(string $name): ?string
     {
@@ -145,7 +166,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritDoc}
      *
-     * @see Laminas\Di\ConfigInterface::setParameters()
+     * @see \Laminas\Di\ConfigInterface::setParameters()
      *
      * @return $this
      */
@@ -172,7 +193,7 @@ class Config implements ConfigInterface
     /**
      * {@inheritDoc}
      *
-     * @see Laminas\Di\ConfigInterface::getTypePreferencesForClass()
+     * @see \Laminas\Di\ConfigInterface::getTypePreferencesForClass()
      */
     private function getTypePreferenceForClass(string $type, ?string $context): ?string
     {
@@ -230,7 +251,10 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    /** @param array|ArrayAccess $options */
+    /**
+     * @psalm-assert array|ArrayAccess $options
+     * @param mixed $options
+     */
     private function ensureArrayOrArrayAccess($options): void
     {
         if (! is_array($options) && ! $options instanceof ArrayAccess) {

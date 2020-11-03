@@ -21,6 +21,8 @@
                 <referencedClass name="LaminasTest\Di\Resolver\AbstractInjectionTest" />
             </errorLevel>
         </DeprecatedClass>
+
+        <!--
         <InternalMethod>
             <errorLevel type="suppress">
                 <referencedMethod name="PHPUnit\Framework\MockObject\Builder\InvocationMocker::method"/>
@@ -32,6 +34,7 @@
                 <referencedMethod name="PHPUnit\Framework\MockObject\Builder\InvocationMocker::with"/>
             </errorLevel>
         </InternalMethod>
+        -->
     </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
