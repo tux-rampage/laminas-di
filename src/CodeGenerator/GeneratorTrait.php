@@ -25,7 +25,7 @@ trait GeneratorTrait
     /** @var int */
     protected $mode = 0755;
 
-    /** @var string */
+    /** @var string|null */
     protected $outputDirectory;
 
     /**
@@ -34,6 +34,7 @@ trait GeneratorTrait
      * This will check the path at $dir if it exsits and if it is a directory
      *
      * @throws GenerateCodeException
+     * @return void
      */
     protected function ensureDirectory(string $dir)
     {
@@ -50,6 +51,8 @@ trait GeneratorTrait
      *
      * @throws LogicException
      * @throws GenerateCodeException
+     * @return void
+     * @psalm-assert non-empty-string $this->outputDirectory
      */
     protected function ensureOutputDirectory()
     {

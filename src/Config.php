@@ -14,6 +14,8 @@ use ArrayAccess;
 
 use function array_filter;
 use function array_keys;
+use function array_map;
+use function array_values;
 use function class_exists;
 use function interface_exists;
 use function is_array;
@@ -84,16 +86,16 @@ use function is_string;
  *
  * @psalm-type TypeConfigArray = array{
  *  typeOf?: class-string,
- *  preferences?: array<array-key, string>,
+ *  preferences?: array<string, string>,
  *  parameters?: array<string, mixed>
  * }
  */
 class Config implements ConfigInterface
 {
-    /** @var array<array-key, string> */
+    /** @var array<string, string> */
     protected $preferences = [];
 
-    /** @var array<array-key, TypeConfigArray> */
+    /** @var array<string, TypeConfigArray> */
     protected $types = [];
 
     /**
@@ -101,37 +103,24 @@ class Config implements ConfigInterface
      *
      * Utilizes the given options array or traversable.
      *
-     * @param array|ArrayAccess $options
+     * @param array|ArrayAccess $options The options array. Traversables will
+     *     be converted to an array internally.
      * @throws Exception\InvalidArgumentException
      */
     public function __construct($options = [])
     {
         $this->ensureArrayOrArrayAccess($options);
-
-        $this->preferences = array_filter($this->dataFromArray($options, 'preferences'), 'is_string');
-        $this->types       = $this->dataFromArray($options, 'types') ?: [];
+        $this->preferences = $this->getDataFromArray($options, 'preferences') ?: [];
+        $this->types       = $this->getDataFromArray($options, 'types') ?: [];
     }
 
     /**
      * @param array|ArrayAccess $data
      */
-    private static function dataFromArray($data, string $key): array
+    private function getDataFromArray($data, string $key): array
     {
-        /** @var mixed $result */
         $result = $data[$key] ?? [];
         return is_array($result) ? $result : [];
-    }
-
-    /**
-     * @param array|ArrayAccess $data
-     * @return array<array-key, string>
-     */
-    private function buildStringMapFromArray($data): array
-    {
-        return array_filter(
-            self::dataFromArray($data, 'types'),
-            'is_string'
-        );
     }
 
     /**
@@ -152,7 +141,7 @@ class Config implements ConfigInterface
      * Returns the instanciation paramters for the given type
      *
      * @param string $type The alias or class name
-     * @return array The configured parameters
+     * @return array<string, mixed> The configured parameters
      */
     public function getParameters(string $type): array
     {
@@ -169,6 +158,7 @@ class Config implements ConfigInterface
      * @see \Laminas\Di\ConfigInterface::setParameters()
      *
      * @return $this
+     * @var array<string, mixed> $params
      */
     public function setParameters(string $type, array $params)
     {
@@ -176,10 +166,10 @@ class Config implements ConfigInterface
         return $this;
     }
 
-    public function getTypePreference(string $type, ?string $context = null): ?string
+    public function getTypePreference(string $type, ?string $contextClass = null): ?string
     {
-        if ($context) {
-            return $this->getTypePreferenceForClass($type, $context);
+        if ($contextClass) {
+            return $this->getTypePreferenceForClass($type, $contextClass);
         }
 
         if (! isset($this->preferences[$type])) {
@@ -219,6 +209,8 @@ class Config implements ConfigInterface
      * {@inheritDoc}
      *
      * @see ConfigInterface::getConfiguredTypeNames()
+     *
+     * @return list<string>
      */
     public function getConfiguredTypeNames(): array
     {

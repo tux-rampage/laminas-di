@@ -36,14 +36,14 @@ interface ConfigInterface
      * Returns the instanciation parameters for the given type
      *
      * @param  string $type The alias or class name
-     * @return array The configured parameter hash
+     * @return array<array-key, mixed> The configured parameter hash
      */
     public function getParameters(string $type): array;
 
     /**
      * Set the instanciation parameters for the given type
      *
-     * @param array<string, mixed> $params
+     * @param array<array-key, mixed> $params
      * @return mixed
      */
     public function setParameters(string $type, array $params);

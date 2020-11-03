@@ -63,7 +63,7 @@ class DefaultContainer implements ContainerInterface
      * @see ContainerInterface::has()
      *
      * @param string $name
-     * @return mixed
+     * @return bool
      */
     public function has($name)
     {
