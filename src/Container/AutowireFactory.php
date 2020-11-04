@@ -23,10 +23,9 @@ class AutowireFactory
      * Retrieves the injector from a container
      *
      * @param ContainerInterface $container The container context for this factory
-     * @return InjectorInterface The dependency injector
      * @throws Exception\RuntimeException When no dependency injector is available.
      */
-    private function getInjector(ContainerInterface $container)
+    private function getInjector(ContainerInterface $container): InjectorInterface
     {
         $injector = $container->get(InjectorInterface::class);
 
@@ -57,8 +56,9 @@ class AutowireFactory
     /**
      * Create an instance
      *
-     * @template T
+     * @template T of object
      * @param string|class-string<T> $requestedName
+     * @param array<string, mixed>|null $options
      * @return T
      */
     public function create(ContainerInterface $container, string $requestedName, ?array $options = null)
@@ -69,8 +69,9 @@ class AutowireFactory
     /**
      * Make invokable and implement the laminas-service factory pattern
      *
-     * @template T
+     * @template T of object
      * @param string|class-string<T> $requestedName
+     * @param array<string, mixed>|null $options
      * @return T
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null)

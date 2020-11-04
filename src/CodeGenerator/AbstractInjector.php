@@ -77,8 +77,9 @@ abstract class AbstractInjector implements InjectorInterface
     }
 
     /**
-     * @template T
+     * @template T of object
      * @param string|class-string<T> $name
+     * @param array<string, mixed> $options
      * @return T
      */
     public function create(string $name, array $options = [])

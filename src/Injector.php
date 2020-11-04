@@ -120,7 +120,7 @@ class Injector implements InjectorInterface
     /**
      * Create the instance with auto wiring
      *
-     * @template T
+     * @template T of object
      * @param string|class-string<T> $name Class name or service alias
      * @param array<string, mixed> $options Constructor parameters, keyed by the parameter name.
      * @return T
@@ -153,7 +153,7 @@ class Injector implements InjectorInterface
      *
      * Any parameters provided will be used as constructor arguments only.
      *
-     * @template T
+     * @template T of object
      * @param string|class-string<T> $name The type name to instantiate.
      * @param array<string, mixed> $params Constructor arguments, keyed by the parameter name.
      * @return T

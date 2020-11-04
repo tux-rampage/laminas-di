@@ -330,6 +330,9 @@ class DependencyResolver implements DependencyResolverInterface
             if ($paramInfo->isRequired()) {
                 $isAlias = $this->config->isAlias($requestedType);
                 $class   = $isAlias ? $this->config->getClassForAlias($requestedType) : $requestedType;
+
+                assert(is_string($class));
+
                 throw new Exception\MissingPropertyException(sprintf(
                     'Could not resolve value for parameter "%s" of type %s in class %s (requested as %s)',
                     $name,

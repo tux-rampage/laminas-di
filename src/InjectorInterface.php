@@ -23,9 +23,9 @@ interface InjectorInterface
     /**
      * Create a new instance of a class or alias
      *
-     * @template T extends object
+     * @template T of object
      * @param string|class-string<T> $name
-     * @param array $options Parameters used for instanciation
+     * @param array<string, mixed> $options Parameters used for instanciation
      * @return T The resulting instace
      * @throws Exception\ExceptionInterface When an error occours during instanciation.
      */
