@@ -24,6 +24,9 @@ use stdClass;
  */
 class LegacyConfigTest extends TestCase
 {
+    /**
+     * @return array<string, array{0: array}>
+     */
     public function provideMigrationConfigFixtures(): array
     {
         $iterator = new GlobIterator(__DIR__ . '/_files/legacy-configs/*.php');

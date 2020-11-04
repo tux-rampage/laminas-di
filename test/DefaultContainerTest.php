@@ -24,7 +24,7 @@ use function uniqid;
 class DefaultContainerTest extends TestCase
 {
     /**
-     * @return MockObject|InjectorInterface
+     * @return MockObject&InjectorInterface
      */
     private function mockInjector()
     {
@@ -34,7 +34,7 @@ class DefaultContainerTest extends TestCase
     /**
      * Tests DefaultContainer->setInstance()
      */
-    public function testSetInstance()
+    public function testSetInstance(): void
     {
         $injector = $this->mockInjector();
         $injector->expects($this->never())->method($this->logicalNot($this->equalTo('')));
@@ -50,7 +50,7 @@ class DefaultContainerTest extends TestCase
     /**
      * Tests DefaultContainer->has()
      */
-    public function testHasConsultatesInjector()
+    public function testHasConsultatesInjector(): void
     {
         $injector = $this->mockInjector();
         $key      = uniqid('TestClass');
@@ -75,7 +75,7 @@ class DefaultContainerTest extends TestCase
     /**
      * Tests DefaultContainer->get()
      */
-    public function testGetUsesInjector()
+    public function testGetUsesInjector(): void
     {
         $injector = $this->mockInjector();
         $key      = uniqid('TestClass');
@@ -92,7 +92,7 @@ class DefaultContainerTest extends TestCase
     /**
      * Tests DefaultContainer->get()
      */
-    public function testGetInstanciatesOnlyOnce()
+    public function testGetInstanciatesOnlyOnce(): void
     {
         $injector = $this->mockInjector();
         $key      = uniqid('TestClass');
@@ -105,7 +105,10 @@ class DefaultContainerTest extends TestCase
             });
 
         $container = new DefaultContainer($injector);
-        $expected  = $container->get($key);
+
+        /** @psalm-var mixed */
+        $expected = $container->get($key);
+
         $this->assertSame($expected, $container->get($key));
     }
 }
