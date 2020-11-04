@@ -20,7 +20,7 @@ interface DefinitionInterface
     /**
      * All class names in this definition
      *
-     * @return string[]
+     * @return list<string>
      */
     public function getClasses(): array;
 

@@ -14,6 +14,7 @@ use Laminas\Di\Exception\GenerateCodeException;
 use Laminas\Di\Exception\LogicException;
 
 use function is_dir;
+use function is_string;
 use function mkdir;
 use function sprintf;
 
@@ -38,6 +39,8 @@ trait GeneratorTrait
      */
     protected function ensureDirectory(string $dir)
     {
+        assert(is_string($this->outputDirectory));
+
         if (! is_dir($dir) && ! mkdir($dir, $this->mode, true)) {
             throw new GenerateCodeException(sprintf(
                 'Could not create output directory: %s',

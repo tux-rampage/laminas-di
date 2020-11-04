@@ -36,6 +36,11 @@
         </InternalMethod>
         -->
     </issueHandlers>
+
+    <stubs>
+        <file name="./stubs/psr-container.phpstub" />
+    </stubs>
+
     <plugins>
         <pluginClass class="Psalm\PhpUnitPlugin\Plugin"/>
     </plugins>

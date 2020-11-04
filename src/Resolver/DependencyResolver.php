@@ -41,7 +41,7 @@ class DependencyResolver implements DependencyResolverInterface
     /** @var DefinitionInterface */
     protected $definition;
 
-    /** @var ContainerInterface */
+    /** @var ContainerInterface|null */
     protected $container;
 
     /** @var string[] */
@@ -300,7 +300,7 @@ class DependencyResolver implements DependencyResolverInterface
                     throw new Exception\UnexpectedValueException(sprintf(
                         'Unusable configured injection for parameter "%s" of type "%s"',
                         $name,
-                        $type
+                        $type ?? 'null'
                     ));
                 }
 
