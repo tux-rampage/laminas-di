@@ -98,7 +98,7 @@ class InjectorGeneratorTest extends TestCase
         $this->assertEquals($expected, $generator->getNamespace());
     }
 
-    public function testGeneratorLogsDebugForEachClass()
+    public function testGeneratorLogsDebugForEachClass(): void
     {
         $config   = new Config();
         $resolver = new DependencyResolver(new RuntimeDefinition(), $config);
@@ -113,7 +113,7 @@ class InjectorGeneratorTest extends TestCase
         $logger->debug(Argument::containingString(TestAsset\B::class))->shouldHaveBeenCalled();
     }
 
-    public function testGeneratorLogsErrorWhenFactoryGenerationFailed()
+    public function testGeneratorLogsErrorWhenFactoryGenerationFailed(): void
     {
         $config    = new Config();
         $resolver  = new DependencyResolver(new RuntimeDefinition(), $config);

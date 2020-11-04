@@ -28,7 +28,7 @@ class FactoryGeneratorTest extends TestCase
 
     private const DEFAULT_NAMESPACE = 'LaminasTest\Di\Generated\Factory';
 
-    public function testGenerateCreatesFiles()
+    public function testGenerateCreatesFiles(): void
     {
         $config    = new Config();
         $resolver  = new DependencyResolver(new RuntimeDefinition(), $config);
@@ -40,7 +40,7 @@ class FactoryGeneratorTest extends TestCase
         $this->assertFileExists($this->dir . '/Factory/LaminasTest/Di/TestAsset/RequiresAFactory.php');
     }
 
-    public function testGenerateBuildsUpClassMap()
+    public function testGenerateBuildsUpClassMap(): void
     {
         $config    = new Config();
         $resolver  = new DependencyResolver(new RuntimeDefinition(), $config);
@@ -59,7 +59,7 @@ class FactoryGeneratorTest extends TestCase
         $this->assertEquals($expected, $generator->getClassmap());
     }
 
-    public function testGenerateForClassWithoutParams()
+    public function testGenerateForClassWithoutParams(): void
     {
         $config    = new Config();
         $resolver  = new DependencyResolver(new RuntimeDefinition(), $config);
@@ -74,7 +74,7 @@ class FactoryGeneratorTest extends TestCase
         );
     }
 
-    public function testGenerateForClassWithParams()
+    public function testGenerateForClassWithParams(): void
     {
         $config    = new Config();
         $resolver  = new DependencyResolver(new RuntimeDefinition(), $config);
